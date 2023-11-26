@@ -13,6 +13,17 @@ export abstract class Controller<T extends { id: unknown }> {
       next(error);
     }
   }
+  async search(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.repo.search({
+        key: Object.entries(req.query)[0][0] as keyof T,
+        value: Object.entries(req.query)[0][1],
+      });
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {

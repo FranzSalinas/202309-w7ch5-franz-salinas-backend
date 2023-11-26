@@ -134,4 +134,19 @@ export class UserMongoRepo implements Repository<User> {
       throw new HttpError(404, 'Not Found', 'Delete not possible');
     }
   }
+  async search({
+    key,
+    value,
+  }: {
+    key: keyof User;
+    value: any;
+  }): Promise<User[]> {
+    const result = await UserModel.find({ [key]: value })
+      .populate('author', {
+        notes: 0,
+      })
+      .exec();
+
+    return result;
+  }
 }
