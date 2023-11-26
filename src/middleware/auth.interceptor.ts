@@ -2,7 +2,6 @@ import createDebug from 'debug';
 import { NextFunction, Request, Response } from 'express';
 import { HttpError } from '../types/http.error.js';
 import { Auth } from '../services/auth.js';
-import { UserMongoRepo } from '../repo/users/user.mongo.repo.js';
 
 const debug = createDebug('W7E:auth:interceptor');
 
