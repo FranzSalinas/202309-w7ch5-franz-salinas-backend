@@ -32,4 +32,21 @@ export class UserController extends Controller<User> {
       next(error);
     }
   }
+  async addFriend(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.repo.addFriend(req.params.id, req.body);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async addEnemy(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.repo.addEnemy(req.params.id, req.body);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

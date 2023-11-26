@@ -39,13 +39,72 @@ export class UserMongoRepo implements Repository<User> {
     return result;
   }
 
-  async update(id: string, updatedItem: Partial<User>): Promise<User> {
+  async addEnemy(id: string, updatedItem: Partial<User>): Promise<User> {
+    const user = await UserModel.findById(updatedItem.id).exec();
+    if (!user) {
+      throw new HttpError(404, 'Not Found', 'User not found');
+    }
+
+    if (user.enemies.includes(id as unknown as User)) {
+      return user;
+    }
+
+    if (user.friends.includes(id as unknown as User)) {
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        updatedItem.id,
+        { $pull: { friends: id } },
+        {
+          new: true,
+        }
+      ).exec();
+
+      if (!updatedUser) {
+        throw new HttpError(404, 'Not Found', 'Update not possible');
+      }
+    }
+
+    const result = await UserModel.findByIdAndUpdate(
+      updatedItem.id,
+      { $push: { enemies: id } },
+      {
+        new: true,
+      }
+    ).exec();
+
+    if (!result) {
+      throw new HttpError(404, 'Not Found', 'Update not possible');
+    }
+
+    return result;
+  }
+
+  async addFriend(id: string, updatedItem: Partial<User>): Promise<User> {
     if (id === updatedItem.id)
-      throw new HttpError(
-        406,
-        '406 Not Acceptable',
-        'You can not add yourself'
-      );
+      throw new HttpError(406, 'Not Acceptable', 'You can´t add yourself');
+    const user = await UserModel.findById(updatedItem.id).exec();
+    if (!user) {
+      throw new HttpError(404, 'Not Found', 'User not found');
+    }
+
+    if (user.friends.includes(id as unknown as User)) {
+      return user;
+    }
+
+    if (user.enemies.includes(id as unknown as User)) {
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        updatedItem.id,
+        { $pull: { enemies: id } },
+        {
+          new: true,
+        }
+      ).exec();
+
+      if (!updatedUser) {
+        throw new HttpError(404, 'Not Found', 'Update not possible');
+      }
+    }
+
+    // Actualizar la lista de amigos
     const result = await UserModel.findByIdAndUpdate(
       updatedItem.id,
       { $push: { friends: id } },
@@ -53,11 +112,26 @@ export class UserMongoRepo implements Repository<User> {
         new: true,
       }
     ).exec();
+
+    if (!result) {
+      throw new HttpError(404, 'Not Found', 'Update not possible');
+    }
+
+    return result;
+  }
+
+  async update(id: string, updatedItem: Partial<User>): Promise<User> {
+    const result = await UserModel.findByIdAndUpdate(id, updatedItem, {
+      new: true,
+    }).exec();
     if (!result) throw new HttpError(404, 'Not Found', 'Update not possible');
     return result;
   }
 
-  delete(_id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(id: string): Promise<void> {
+    const result = await UserModel.findByIdAndDelete(id).exec();
+    if (!result) {
+      throw new HttpError(404, 'Not Found', 'Delete not possible');
+    }
   }
 }

@@ -25,4 +25,20 @@ userRouter.patch(
   controller.login.bind(controller)
 );
 
-userRouter.patch('/add/friend/:id', controller.update.bind(controller));
+userRouter.patch(
+  '/update/:id',
+  interceptor.authorization.bind(interceptor),
+  controller.update.bind(controller)
+);
+
+userRouter.patch(
+  '/add/friend/:id',
+  interceptor.authorization.bind(interceptor),
+  controller.addFriend.bind(controller)
+);
+
+userRouter.patch(
+  '/add/enemy/:id',
+  interceptor.authorization.bind(interceptor),
+  controller.addFriend.bind(controller)
+);
