@@ -25,6 +25,13 @@ const userSchema = new Schema<User>({
     required: true,
   },
 
+  avatar: {
+    publicId: String,
+    size: Number,
+    format: String,
+    url: String,
+  },
+
   friends: [
     {
       type: Schema.Types.ObjectId,
