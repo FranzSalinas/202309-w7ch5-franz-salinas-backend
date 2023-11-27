@@ -32,9 +32,22 @@ export class UserController extends Controller<User> {
       next(error);
     }
   }
+
+  async removeFriend(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.repo.removeFriend(
+        req.params.id,
+        req.body.userId
+      );
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async addFriend(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.repo.addFriend(req.params.id, req.body);
+      const result = await this.repo.addFriend(req.params.id, req.body.userId);
       res.json(result);
     } catch (error) {
       next(error);
@@ -43,7 +56,7 @@ export class UserController extends Controller<User> {
 
   async addEnemy(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.repo.addEnemy(req.params.id, req.body);
+      const result = await this.repo.addEnemy(req.params.id, req.body.userId);
       res.json(result);
     } catch (error) {
       next(error);
