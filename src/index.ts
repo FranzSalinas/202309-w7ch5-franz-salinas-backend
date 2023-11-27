@@ -4,7 +4,7 @@ import createDebug from 'debug';
 import { dbConnect } from './services/db.connect.js';
 
 const debug = createDebug('W7E:index');
-const PORT = process.env.PORT || 3030; // La primera parte designa un puerto de manera estatica
+const PORT = process.env.PORT ?? 3030; // La primera parte designa un puerto de manera estatica
 
 const server = createServer(app);
 debug('Starting server');

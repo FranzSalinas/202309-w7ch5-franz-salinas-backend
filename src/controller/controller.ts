@@ -13,6 +13,7 @@ export abstract class Controller<T extends { id: unknown }> {
       next(error);
     }
   }
+
   async search(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.repo.search({

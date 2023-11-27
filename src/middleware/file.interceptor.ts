@@ -12,10 +12,10 @@ export class FileInterceptor {
           callback(null, prefix + '-' + file.originalname);
         },
       }),
-      limits: { fileSize }, // dest es el nombre de la carpeta en donde se guardan los ficheros
+      limits: { fileSize }, // Dest es el nombre de la carpeta en donde se guardan los ficheros
     };
 
-    const middleware = multer(options).single(fileName); // multer salva en req.file los datos del file y req.body guarda el body.
+    const middleware = multer(options).single(fileName); // Multer salva en req.file los datos del file y req.body guarda el body.
 
     return (req: Request, res: Response, next: NextFunction) => {
       const previousBody = req.body;

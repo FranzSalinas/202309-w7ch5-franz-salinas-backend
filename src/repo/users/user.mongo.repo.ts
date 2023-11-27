@@ -134,6 +134,7 @@ export class UserMongoRepo implements Repository<User> {
       throw new HttpError(404, 'Not Found', 'Delete not possible');
     }
   }
+
   async search({
     key,
     value,
@@ -149,6 +150,7 @@ export class UserMongoRepo implements Repository<User> {
 
     return result;
   }
+
   async removeFriend(
     userId: string,
     friendIdToRemove: Partial<User>
